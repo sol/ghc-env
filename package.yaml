@@ -1,0 +1,37 @@
+name: ghc-env
+license: MIT
+copyright: (c) 2016 Simon Hengel
+author: Simon Hengel <sol@typeful.net>
+maintainer: Simon Hengel <sol@typeful.net>
+
+ghc-options: -Wall
+
+dependencies:
+  - base == 4.*
+  - stack
+  - monad-logger
+  - path
+  - path-io
+  - process
+  - filepath
+  - http-client
+
+library:
+  source-dirs: src
+  exposed-modules: GhcEnv
+
+executables:
+  ghc-env:
+    main: driver/Main.hs
+    dependencies:
+      - ghc-env
+
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs:
+      - test
+      - src
+    cpp-options: -DTEST
+    dependencies:
+      - hspec == 2.*
