@@ -17,7 +17,7 @@ parseArgs env args = case args of
     Just defaultVersion = parseVersion "7.10.3"
     parseCommand xs = case xs of
         ["--env"] -> Source
-        prog : args -> Exec prog args
+        prog : progArgs -> Exec prog progArgs
         [] -> Exec shell []
 
     shell = fromMaybe "/bin/sh" $ lookup "SHELL" env
