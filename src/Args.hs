@@ -8,6 +8,7 @@ import qualified Stack.Types.Version as Stack
 
 data Command = Exec String [String]
              | Source
+             deriving (Show, Eq)
 
 parseArgs :: [(String, String)] -> [String] -> (Version, Command)
 parseArgs env args = case args of
