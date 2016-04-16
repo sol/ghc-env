@@ -38,9 +38,14 @@ dummyStackFile = "resolver: lts-5.8"
 main :: IO ()
 main = do
   (version, command) <- parseArgs <$> getEnvironment <*> getArgs
-  paths <- ensureGhc version  
-  (modifyPath paths <$> lookupEnv "PATH") >>= setEnv "PATH"
-  uncurry spawnProcess command >>= waitForProcess >>= throwIO
+  paths <- ensureGhc version
+  paths' <- modifyPath paths <$> lookupEnv "PATH"
+  case command of
+      Exec prog args -> do
+          setEnv "PATH" paths'
+          spawnProcess prog args >>= waitForProcess >>= throwIO
+      Source -> do
+          putStrLn $ "PATH=" ++ paths'
 
 modifyPath :: [FilePath] -> Maybe String -> String
 modifyPath dirs mPath = intercalate [searchPathSeparator] path
